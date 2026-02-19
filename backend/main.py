@@ -8,8 +8,8 @@ import os
 # Load Environment FIRST, before importing services that use env vars
 load_dotenv()
 
-from backend.app.database.db import load_db
-from backend.app.routes import recipes
+from backend.app.database import load_db
+from backend.app.routes import router
 
 # Initialize App
 app = FastAPI(title="Become-A-Cook AI")
@@ -29,7 +29,7 @@ def startup_event():
     load_db()
 
 # Include Routes
-app.include_router(recipes.router, prefix="/recipes", tags=["recipes"])
+app.include_router(router, prefix="/recipes", tags=["recipes"])
 
 if __name__ == "__main__":
     uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)

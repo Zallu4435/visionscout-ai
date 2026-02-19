@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from typing import List, Optional
-from backend.app.database.db import get_all_recipes, get_recipe_by_id
-from backend.app.models.schemas import ValidationRequest, SearchResponse
+from backend.app.database import get_all_recipes, get_recipe_by_id
+from backend.app.models import ValidationRequest, SearchResponse
 
 # Configure Gemini
 GENAI_API_KEY = os.getenv("GEMINI_API_KEY")

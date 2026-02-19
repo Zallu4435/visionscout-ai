@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Search, ChevronRight, Brain, Utensils, Award, Sparkles } from "lucide-react";
+import { ChevronRight, Brain, Utensils, Award, Sparkles } from "lucide-react";
 import RecipeCard from "@/components/RecipeCard";
 import SearchBar from "@/components/SearchBar";
 import { API_BASE_URL } from "@/lib/config";

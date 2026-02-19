@@ -1157,6 +1157,15 @@ img {
   opacity: 0.7;
 }
 
+/* Locked state when submission is in progress */
+.panel-locked {
+  opacity: 0.55;
+  pointer-events: none;
+  filter: grayscale(30%);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+
 /* Interactive Input area */
 .plan-textarea {
   width: 100%;
@@ -1190,6 +1199,17 @@ img {
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
 }
 
+/* Textarea locked state while submitting */
+.plan-textarea.textarea-locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.01);
+  filter: grayscale(20%);
+  transition: opacity 0.3s ease;
+}
+
+
 .input-footer {
   margin-top: 24px;
 }
@@ -1209,6 +1229,38 @@ img {
   font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Full-width verdict panel (replaces the 2-col grid on result) */
+.verdict-full-panel {
+  padding: 56px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .verdict-full-panel {
+    padding: 24px;
+  }
+}
+
+/* Side-by-side action buttons at bottom of verdict */
+.verdict-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.verdict-actions .btn {
+  flex: 1;
+  padding: 18px;
+  font-size: 1rem;
+}
+
+@media (max-width: 480px) {
+  .verdict-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
 }
 
 /* Result Verdict UI */

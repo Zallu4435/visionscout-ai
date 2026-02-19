@@ -151,81 +151,90 @@ export default function RecipePage() {
                     </div>
                 </div>
 
-                <div className="recipe-game-grid mt-4">
-
-                    {/* HINTS PANEL */}
-                    <div className="glass-panel hint-exploration-panel animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                        <div className="panel-header">
-                            <h2 className="panel-title"><Sparkles size={22} className="primary-icon" /> Sensory Hints</h2>
-                            <p className="panel-subtitle">Insights from the Chef's kitchen</p>
-                        </div>
-
-                        <div className="hints-list">
-                            {recipe.hints.map((hint, idx) => {
-                                const isRevealed = idx < hintsRevealed;
-                                return (
-                                    <div key={idx} className={`hint-item-v2 ${isRevealed ? 'revealed' : 'hidden'}`}>
-                                        <div className="hint-num">{idx + 1}</div>
-                                        <div className="hint-text">
-                                            {isRevealed ? hint : "???"}
-                                        </div>
-                                        {!isRevealed && <div className="lock-overlay"><Eye size={14} /> Encrypted</div>}
-                                    </div>
-                                );
-                            })}
-                        </div>
-
-                        {hintsRevealed < recipe.hints.length && !result && (
-                            <button
-                                className={`reveal-hint-btn ${hintCooldown > 0 ? 'loading' : ''}`}
-                                onClick={handleRevealHint}
-                                disabled={hintCooldown > 0}
-                            >
-                                {hintCooldown > 0 ? (
-                                    <><Timer size={18} /> Recharging ({hintCooldown}s)</>
-                                ) : (
-                                    <>Consume Hint <span className="pts-cost">-6 pts</span></>
-                                )}
-                            </button>
-                        )}
-                    </div>
-
-                    {/* INTERACTION PANEL */}
-                    <div className="glass-panel interaction-panel animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                        {result ? (
-                            <div className="verdict-display">
-                                <div className="verdict-header">
-                                    <div className={`verdict-score-ring ${result.score >= 80 ? 'gold' : result.score >= 50 ? 'silver' : 'bronze'}`}>
-                                        <div className="score-num">{result.score}</div>
-                                        <div className="score-total">/ 100</div>
-                                    </div>
-                                    <h2 className="verdict-title">Chef's Decision</h2>
-                                    <div className="feedback-statement">{result.feedback}</div>
+                {result ? (
+                    /* ── FULL-WIDTH VERDICT (hints panel gone) ── */
+                    <div className="glass-panel verdict-full-panel animate-fade-in mt-4" style={{ animationDelay: '0.2s' }}>
+                        <div className="verdict-display">
+                            <div className="verdict-header">
+                                <div className={`verdict-score-ring ${result.score >= 80 ? 'gold' : result.score >= 50 ? 'silver' : 'bronze'}`}>
+                                    <div className="score-num">{result.score}</div>
+                                    <div className="score-total">/ 100</div>
                                 </div>
+                                <h2 className="verdict-title">Chef's Decision</h2>
+                                <div className="feedback-statement">{result.feedback}</div>
+                            </div>
 
-                                <div className="ingredients-check">
-                                    <h3 className="sub-title">Ingredient Profiling</h3>
-                                    <div className="chips-container">
-                                        {result.all_ingredients.map(ing => {
-                                            const matched = result.matched_ingredients.includes(ing);
-                                            return (
-                                                <div key={ing} className={`ing-chip ${matched ? 'matched' : 'missed'}`}>
-                                                    {matched ? <CheckCircle size={14} /> : <AlertTriangle size={14} />}
-                                                    {ing}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
+                            <div className="ingredients-check">
+                                <h3 className="sub-title">Ingredient Profiling</h3>
+                                <div className="chips-container">
+                                    {result.all_ingredients.map((ing, idx) => {
+                                        const matched = result.matched_ingredients.includes(ing);
+                                        return (
+                                            <div key={`${idx}-${ing}`} className={`ing-chip ${matched ? 'matched' : 'missed'}`}>
+                                                {matched ? <CheckCircle size={14} /> : <AlertTriangle size={14} />}
+                                                {ing}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
+                            </div>
 
-                                <button className="btn btn-primary w-full mt-4" onClick={() => window.location.reload()}>
+                            <div className="verdict-actions">
+                                <button className="btn btn-primary" onClick={() => window.location.reload()}>
                                     Challenge Again
                                 </button>
-                                <button className="btn btn-secondary w-full mt-2" onClick={() => router.push('/search')}>
+                                <button className="btn btn-secondary" onClick={() => router.push('/search')}>
                                     Try Different Dish
                                 </button>
                             </div>
-                        ) : (
+                        </div>
+                    </div>
+                ) : (
+                    /* ── 2-COLUMN GAME GRID (hints + input) ── */
+                    <div className="recipe-game-grid mt-4">
+
+                        {/* HINTS PANEL */}
+                        <div className={`glass-panel hint-exploration-panel animate-fade-in ${submitting ? 'panel-locked' : ''}`} style={{ animationDelay: '0.2s' }}>
+                            <div className="panel-header">
+                                <h2 className="panel-title"><Sparkles size={22} className="primary-icon" /> Sensory Hints</h2>
+                                <p className="panel-subtitle">Insights from the Chef's kitchen</p>
+                            </div>
+
+                            <div className="hints-list">
+                                {recipe.hints.map((hint, idx) => {
+                                    const isRevealed = idx < hintsRevealed;
+                                    return (
+                                        <div key={idx} className={`hint-item-v2 ${isRevealed ? 'revealed' : 'hidden'}`}>
+                                            <div className="hint-num">{idx + 1}</div>
+                                            <div className="hint-text">
+                                                {isRevealed ? hint : "???"}
+                                            </div>
+                                            {!isRevealed && <div className="lock-overlay"><Eye size={14} /> Encrypted</div>}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            {hintsRevealed < recipe.hints.length && (
+                                <button
+                                    className={`reveal-hint-btn ${hintCooldown > 0 || submitting ? 'loading' : ''}`}
+                                    onClick={handleRevealHint}
+                                    disabled={hintCooldown > 0 || submitting}
+                                    title={submitting ? 'Chef is tasting — hints locked' : undefined}
+                                >
+                                    {submitting ? (
+                                        <><Timer size={18} /> Hints Locked</>
+                                    ) : hintCooldown > 0 ? (
+                                        <><Timer size={18} /> Recharging ({hintCooldown}s)</>
+                                    ) : (
+                                        <>Consume Hint <span className="pts-cost">-6 pts</span></>
+                                    )}
+                                </button>
+                            )}
+                        </div>
+
+                        {/* INTERACTION PANEL */}
+                        <div className="glass-panel interaction-panel animate-fade-in" style={{ animationDelay: '0.3s' }}>
                             <div className="input-display">
                                 <div className="panel-header">
                                     <h2 className="panel-title"><ChefHat size={22} className="primary-icon" /> The Cooking Plan</h2>
@@ -233,14 +242,21 @@ export default function RecipePage() {
                                 </div>
 
                                 <textarea
-                                    className="plan-textarea"
+                                    className={`plan-textarea ${submitting ? 'textarea-locked' : ''}`}
                                     value={plan}
                                     onChange={(e) => setPlan(e.target.value)}
                                     placeholder="Describe your process... (e.g. 'I'd start by braising the beef in red wine...')"
+                                    disabled={submitting}
+                                    readOnly={submitting}
                                 />
 
                                 <div className="input-footer">
-                                    <p className="input-hint">The Chef considers accuracy, technique, and ingredients.</p>
+                                    <p className="input-hint">
+                                        {submitting
+                                            ? "⏳ The Chef is evaluating your plan..."
+                                            : "The Chef considers accuracy, technique, and ingredients."
+                                        }
+                                    </p>
                                     <button
                                         className="btn btn-primary submit-plan-btn"
                                         onClick={handleSubmit}
@@ -250,9 +266,9 @@ export default function RecipePage() {
                                     </button>
                                 </div>
                             </div>
-                        )}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );

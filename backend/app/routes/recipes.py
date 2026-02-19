@@ -1,9 +1,9 @@
 
 from typing import Optional
 from fastapi import APIRouter, HTTPException
-from backend.app.models.schemas import RecipeDetail, ValidationRequest, ValidationResponse, PaginatedSearchResponse
-from backend.app.services.recipe_service import search_recipes_logic, validate_plan_logic
-from backend.app.database.db import get_recipe_by_id
+from backend.app.models import RecipeDetail, ValidationRequest, ValidationResponse, PaginatedSearchResponse
+from backend.app.services import search_recipes_logic, validate_plan_logic
+from backend.app.database import get_recipe_by_id
 
 router = APIRouter()
 
