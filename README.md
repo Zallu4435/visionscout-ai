@@ -1,200 +1,249 @@
 # 🍳 Become-A-Cook AI
 
-An AI-powered recipe guessing game where you analyze dish images, decode hints, and describe the cooking method — then get brutally honest feedback from a Michelin-star Chef AI.
+<p align="center">
+  <strong>AI Recipe Guessing Game with Chef-Level Evaluation Engine</strong>
+</p>
+
+<p align="center">
+A full-stack AI-powered cooking challenge platform where users analyze dish images, reconstruct recipes, and receive brutally honest feedback from a Michelin-style AI Chef powered by Google Gemini.
+</p>
+
+<p align="center">
+  <strong>Mode:</strong> 🎮 Game + 🤖 AI Evaluation Engine
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" />
+  <img src="https://img.shields.io/badge/FastAPI-Python-009688?logo=fastapi" />
+  <img src="https://img.shields.io/badge/Google_Gemini-AI-8E75B2?logo=google" />
+  <img src="https://img.shields.io/badge/PostgreSQL/Data-JSON-orange" />
+</p>
 
 ---
 
-## 🚀 How to Start
+# 📌 Overview
 
-### Prerequisites
+**Become-A-Cook AI** is an interactive AI cooking challenge platform where users attempt to reverse-engineer recipes from images and hints.
 
-- **Python 3.10+** — [Download](https://python.org)
-- **Node.js 18+** — [Download](https://nodejs.org)
-- **Gemini API Key** — [Get one free](https://aistudio.google.com/app/apikey)
+The system evaluates:
+- Ingredient accuracy
+- Cooking logic
+- Step-by-step reasoning
+- Hint usage efficiency
+
+Then returns a **chef-style score + brutally honest feedback** powered by Gemini AI.
 
 ---
 
-### 1. Clone & Setup Environment
+# 🍽️ Core Features
 
+## 🎮 AI Cooking Game Engine
+
+- Guess recipes from dish images and hints
+- Step-by-step cooking plan submission
+- Score-based evaluation system (0–100)
+- Hint penalty system (-6 points per hint)
+- Replayable challenges
+
+---
+
+## 🤖 AI Chef Evaluation System
+
+- Gemini-powered reasoning engine
+- Structured feedback generation:
+  - 🔥 Roast (critique)
+  - 👨‍🍳 Cooking feedback
+  - 💡 Chef secret tips
+- Ingredient matching engine
+- Smart scoring algorithm
+
+---
+
+## 📚 Recipe Intelligence Layer
+
+- 500+ recipe dataset (MealDB sourced)
+- Category-based search system
+- Recipe metadata extraction
+- Ingredient normalization engine
+
+---
+
+## ⚡ Full-Stack Architecture
+
+- FastAPI backend (high-performance API layer)
+- Next.js frontend (game UI + interaction layer)
+- JSON-based dataset (lightweight, fast queries)
+- Modular service-based backend design
+
+---
+
+# 🧠 System Architecture
+
+```text
+Frontend (Next.js UI)
+        │
+        ▼
+FastAPI Backend (Game Engine)
+        │
+ ┌──────┼──────────────┐
+ ▼      ▼              ▼
+Recipes  AI Engine   Validation Layer
+(JSON)   (Gemini)    (Pydantic)
+        │
+        ▼
+   Score + Feedback Response
+---
+
+# 🚀 Quick Start
+
+### 📦 Prerequisites
+- **Python 3.10+**
+- **Node.js 18+**
+- **Gemini API Key** (optional but recommended)
+
+### 1️⃣ Clone Project
 ```bash
 git clone <your-repo-url>
 cd python-recipe
 ```
 
-Create a `.env` file in the **project root**:
-
-```env
-GEMINI_API_KEY=your_gemini_api_key_here
-```
-
----
-
-### 2. Start the Backend (FastAPI)
-
-> ⚠️ Always run from the **project root** (`python-recipe/`), not from inside `backend/`.
-
+### 2️⃣ Backend Setup (FastAPI)
 ```bash
-# First time only — create the virtual environment and install dependencies
 python3 -m venv backend/venv
 backend/venv/bin/pip install -r backend/requirements.txt
+```
 
-# Start the server
+**Start Backend**
+```bash
 backend/venv/bin/python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-Backend runs at → **http://localhost:8000**  
-API docs (Swagger) → **http://localhost:8000/docs**
+Backend: http://localhost:8000
+Swagger Docs: http://localhost:8000/docs
 
----
-
-### 3. Start the Frontend (Next.js)
-
+### 3️⃣ Frontend Setup (Next.js)
 ```bash
 cd frontend
-npm install       # First time only
+npm install
 npm run dev
 ```
 
-Frontend runs at → **http://localhost:3000**
+Frontend: http://localhost:3000
+
+### 4️⃣ Run Full App
+Make sure both servers are running:
+- **Backend** → 8000
+- **Frontend** → 3000
 
 ---
 
-### 4. Open the App
-
-Visit **http://localhost:3000** in your browser. Both servers must be running simultaneously.
-
----
-
-## 🗂️ Project Structure
-
-```
+# 🗂️ Project Structure
+```text
 python-recipe/
-├── .env                        # API keys (never commit this)
-├── .gitignore
-├── README.md
-│
 ├── backend/
-│   ├── main.py                 # FastAPI app entry point
-│   ├── requirements.txt        # Python dependencies
-│   ├── venv/                   # Python virtual environment (gitignored)
-│   ├── data/
-│   │   └── recipes.json        # 500 recipe dataset
+│   ├── main.py
+│   ├── requirements.txt
+│   ├── data/recipes.json
 │   ├── scripts/
-│   │   ├── generate_recipes.py # Seed script (50 base recipes)
-│   │   ├── import_recipes.py   # Fetches 500 recipes from MealDB API
-│   │   └── list_models.py      # Debug: lists available Gemini models
 │   └── app/
-│       ├── __init__.py
 │       ├── database/
-│       │   ├── __init__.py
-│       │   └── db.py           # JSON data loader & query functions
 │       ├── models/
-│       │   ├── __init__.py
-│       │   └── schemas.py      # Pydantic request/response models
 │       ├── routes/
-│       │   ├── __init__.py
-│       │   └── recipes.py      # API route definitions
 │       └── services/
-│           ├── __init__.py
-│           └── recipe_service.py  # Business logic + Gemini AI integration
 │
-└── frontend/
-    ├── package.json
-    └── src/
-        ├── app/
-        │   ├── globals.css         # Global design system & styles
-        │   ├── layout.tsx
-        │   ├── page.tsx            # Home page
-        │   ├── search/
-        │   │   └── page.tsx        # Recipe search & browse
-        │   └── recipe/[id]/
-        │       └── page.tsx        # Recipe detail & game page
-        ├── components/
-        │   ├── Navbar.tsx
-        │   ├── Footer.tsx
-        │   ├── RecipeCard.tsx
-        │   ├── SearchBar.tsx
-        │   ├── Pagination.tsx
-        │   └── Loading.tsx
-        └── lib/
-            └── config.ts           # API base URL config
+├── frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   ├── components/
+│   │   └── lib/
+│   └── package.json
 ```
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
+|-------|------------|
 | **Frontend** | Next.js 16, React 19, TypeScript |
-| **Styling** | Vanilla CSS (custom design system) |
-| **Icons** | Lucide React |
-| **Backend** | FastAPI, Python 3.14 |
-| **Server** | Uvicorn (ASGI) |
-| **AI** | Google Gemini (`gemini-flash-latest`) |
-| **Data** | JSON flat-file (500 recipes from MealDB) |
+| **Backend** | FastAPI (Python) |
+| **AI Engine** | Google Gemini |
+| **Data Layer** | JSON (500+ recipes) |
 | **Validation** | Pydantic v2 |
+| **Server** | Uvicorn |
 
 ---
 
-## 📡 API Reference
+# 📡 API Reference
 
-Base URL: `http://localhost:8000`
+**Base URL**
+`http://localhost:8000`
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/recipes/search?q=&page=1&limit=12&category=` | Search & paginate recipes |
-| `GET` | `/recipes/{id}` | Get recipe details + hints |
-| `POST` | `/recipes/validate` | Submit cooking plan for AI scoring |
+### 🔍 Search Recipes
+`GET /recipes/search?q=&page=1&limit=12`
 
-### POST `/recipes/validate` — Request Body
+### 🍽️ Get Recipe
+`GET /recipes/{id}`
 
+### 🤖 AI Evaluation
+`POST /recipes/validate`
+
+**Request**
 ```json
 {
   "recipe_id": 1,
-  "plan": "I would start by marinating the chicken in yogurt...",
+  "plan": "I will marinate chicken in yogurt and spices...",
   "hints_used": 2
 }
 ```
 
-### Response
-
+**Response**
 ```json
 {
   "score": 78,
-  "feedback": "🔥 THE ROAST: ...\n👨‍🍳 THE CRITIQUE: ...\n💡 THE CHEF'S SECRET: ...",
+  "feedback": "🔥 THE ROAST: ... 👨‍🍳 THE CRITIQUE: ... 💡 CHEF SECRET: ...",
   "matched_ingredients": ["Chicken", "Yogurt"],
-  "all_ingredients": ["Chicken", "Basmati Rice", "Yogurt", "Onion"]
+  "all_ingredients": ["Chicken", "Rice", "Yogurt", "Onion"]
 }
 ```
 
 ---
 
-## 🔄 Regenerate Recipe Dataset
-
-If you want to rebuild the `recipes.json` from scratch:
-
+# 🔄 Dataset Regeneration
 ```bash
-# Fetch 500 real recipes from TheMealDB (free API, no key needed)
-cd python-recipe
 backend/venv/bin/python backend/scripts/import_recipes.py
 ```
 
 ---
 
-## 🔑 Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GEMINI_API_KEY` | ✅ Yes | Google Gemini API key for AI feedback |
-
-> Without the key, the app still works — AI feedback is replaced with an offline message and scoring still functions normally.
+# 🧠 Engineering Highlights
+- AI-driven scoring system (Gemini reasoning engine)
+- Ingredient matching algorithm
+- Hint penalty-based gamification system
+- Clean FastAPI modular architecture
+- Lightweight JSON-based dataset design
+- Full-stack separation of concerns
 
 ---
 
-## 💡 Tips
+# 🎯 Game Mechanics
+- **Max Score:** 100
+- **Each hint:** -6 points
+- **Perfect score =** no hints + full ingredient match
+- **AI Chef is intentionally strict** (no mercy 🍳)
 
-- **Hints cost `-6 pts` each** from your maximum potential score of 100
-- **Zero hints + all ingredients = perfect 100** guaranteed
-- The AI Chef persona is intentionally brutal — don't take it personally 🍳
-- Run the backend from the **project root**, not from `backend/` — module imports depend on it
+---
+
+# 🔮 Future Improvements
+- PostgreSQL migration for scalability
+- Image-based recipe detection (Vision AI)
+- Multiplayer cooking challenges
+- Leaderboard system
+- User accounts & progression system
+- Daily cooking challenges
+
+---
+
+# 📝 License
+
+MIT License
